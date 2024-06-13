@@ -3,13 +3,17 @@ package com.ciazhar.postgres.service;
 
 import com.ciazhar.postgres.model.Employee;
 import com.ciazhar.postgres.repository.EmployeeRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Stream;
 
 /**
  * Service layer is where all the business logic lies
@@ -21,20 +25,20 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepo;
 
-    public List<Employee> getAllEmployees(){
+    public List<Employee> getAllEmployees() {
         return employeeRepo.findAll();
     }
 
-    public Employee getEmployeeById(Integer id){
+    public Employee getEmployeeById(Integer id) {
         Optional<Employee> optionalEmployee = employeeRepo.findById(id);
-        if(optionalEmployee.isPresent()){
+        if (optionalEmployee.isPresent()) {
             return optionalEmployee.get();
         }
         log.info("Employee with id: {} doesn't exist", id);
         return null;
     }
 
-    public Employee saveEmployee (Employee employee){
+    public Employee saveEmployee(Employee employee) {
         employee.setCreatedAt(LocalDateTime.now());
         employee.setUpdatedAt(LocalDateTime.now());
         Employee savedEmployee = employeeRepo.save(employee);
@@ -43,7 +47,7 @@ public class EmployeeService {
         return savedEmployee;
     }
 
-    public Employee updateEmployee (Employee employee) {
+    public Employee updateEmployee(Employee employee) {
         Optional<Employee> existingEmployee = employeeRepo.findById(employee.getId());
         employee.setCreatedAt(existingEmployee.get().getCreatedAt());
         employee.setUpdatedAt(LocalDateTime.now());
@@ -54,8 +58,18 @@ public class EmployeeService {
         return updatedEmployee;
     }
 
-    public void deleteEmployeeById (Integer id) {
+    public void deleteEmployeeById(Integer id) {
         employeeRepo.deleteById(id);
+    }
+
+    @Transactional
+    public Stream<Employee> streamAllEmployee() {
+        return employeeRepo.streamAllEmployee();
+    }
+
+    @Async
+    public CompletableFuture<List<Employee>> readAllBy() {
+        return employeeRepo.readAllBy();
     }
 
 }

@@ -3,11 +3,18 @@ package com.ciazhar.postgres.controller;
 import com.ciazhar.postgres.model.Employee;
 import com.ciazhar.postgres.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Controller class is where all the user requests are handled and required/appropriate
@@ -30,6 +37,30 @@ public class EmployeeController {
     @GetMapping("/")
     public ResponseEntity<List<Employee>> getAllEmployees(){
         return ResponseEntity.ok().body(employeeService.getAllEmployees());
+    }
+
+    /**
+     * This method is called when a GET request is made
+     * URL: localhost:8080/employee/v1/stream
+     * Purpose: Fetches all the employees in the employee table streamingly.
+     * @return List of Employees
+     */
+    @GetMapping("/stream")
+    public List<Employee> streamAllEmployee() {
+        try (Stream<Employee> employeeStream = employeeService.streamAllEmployee()) {
+            return employeeStream.collect(Collectors.toList());
+        }
+    }
+
+    /**
+     * This method is called when a GET request is made
+     * URL: localhost:8080/employee/v1/async
+     * Purpose: Fetches all the employees in the employee table asynchronously.
+     * @return List of Employees
+     */
+    @GetMapping("/async")
+    public CompletableFuture<List<Employee>> readAllBy() {
+        return employeeService.readAllBy();
     }
 
     /**
