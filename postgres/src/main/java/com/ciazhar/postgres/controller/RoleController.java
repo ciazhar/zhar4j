@@ -18,30 +18,30 @@ public class RoleController {
 
     @GetMapping
     public ResponseEntity<ApiResponse> getAllRoles() {
-        return ResponseEntity.ok().body(new ApiResponse("success", null, roleService.findAll()));
+        return ResponseEntity.ok().body(new ApiResponse("success", roleService.findAll(), roleService.count()));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getRoleById(@PathVariable Integer id) {
         Role role = roleService.findById(id);
-        return ResponseEntity.ok().body(new ApiResponse("success", null, role));
+        return ResponseEntity.ok().body(new ApiResponse("success", role));
     }
 
     @PostMapping
     public ResponseEntity<ApiResponse> createRole(@RequestBody Role role) {
         Role createdRole = roleService.save(role);
-        return ResponseEntity.ok().body(new ApiResponse("success", null, createdRole));
+        return ResponseEntity.ok().body(new ApiResponse("success", createdRole));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse> updateRole(@PathVariable Integer id, @RequestBody Role role) {
         Role updatedRole = roleService.update(id, role);
-        return ResponseEntity.ok().body(new ApiResponse("success", null, updatedRole));
+        return ResponseEntity.ok().body(new ApiResponse("success", updatedRole));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteRole(@PathVariable Integer id) {
         roleService.deleteById(id);
-        return ResponseEntity.ok().body(new ApiResponse("success", null, null));
+        return ResponseEntity.ok().body(new ApiResponse("success"));
     }
 }

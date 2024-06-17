@@ -78,4 +78,8 @@ public class EmployeeService {
         return employeeRepo.readAllBy();
     }
 
+    public Long count() {
+        return employeeRepo.count();
+    }
+
 }

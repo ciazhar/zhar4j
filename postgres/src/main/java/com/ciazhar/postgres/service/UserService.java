@@ -38,4 +38,8 @@ public class UserService {
     public void deleteUser(Integer id) {
         userRepository.deleteById(id);
     }
+
+    public Long count() {
+        return userRepository.count();
+    }
 }

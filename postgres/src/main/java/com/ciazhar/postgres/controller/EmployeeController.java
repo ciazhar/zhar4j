@@ -27,13 +27,13 @@ public class EmployeeController {
 
     @GetMapping
     public ResponseEntity<ApiResponse> getAllEmployees() {
-        return ResponseEntity.ok().body(new ApiResponse("success", null, employeeService.getAllEmployees()));
+        return ResponseEntity.ok().body(new ApiResponse("success", employeeService.getAllEmployees(), employeeService.count()));
     }
 
     @GetMapping("/stream")
     public ResponseEntity<ApiResponse> streamAllEmployee() {
         try (Stream<Employee> employeeStream = employeeService.streamAllEmployee()) {
-            return ResponseEntity.ok().body(new ApiResponse("success", null, employeeStream.collect(Collectors.toList())));
+            return ResponseEntity.ok().body(new ApiResponse("success", employeeStream.collect(Collectors.toList())));
         }
     }
 
@@ -44,22 +44,22 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getEmployeeById(@PathVariable Integer id) {
-        return ResponseEntity.ok().body(new ApiResponse("success", null, employeeService.getEmployeeById(id)));
+        return ResponseEntity.ok().body(new ApiResponse("success", employeeService.getEmployeeById(id)));
     }
 
     @PostMapping
     public ResponseEntity<ApiResponse> saveEmployee(@RequestBody Employee employee) {
-        return ResponseEntity.ok().body(new ApiResponse("success", null, employeeService.saveEmployee(employee)));
+        return ResponseEntity.ok().body(new ApiResponse("success", employeeService.saveEmployee(employee)));
     }
 
     @PutMapping
     public ResponseEntity<ApiResponse> updateEmployee(@RequestBody Employee employee) {
-        return ResponseEntity.ok().body(new ApiResponse("success", null, employeeService.updateEmployee(employee)));
+        return ResponseEntity.ok().body(new ApiResponse("success", employeeService.updateEmployee(employee)));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteEmployeeById(@PathVariable Integer id) {
         employeeService.deleteEmployeeById(id);
-        return ResponseEntity.ok().body(new ApiResponse("success", null, null));
+        return ResponseEntity.ok().body(new ApiResponse("success"));
     }
 }

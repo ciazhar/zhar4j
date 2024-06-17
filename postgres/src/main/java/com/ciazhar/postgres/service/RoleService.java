@@ -36,4 +36,8 @@ public class RoleService {
     public void deleteById(Integer id) {
         roleRepository.deleteById(id);
     }
+
+    public Long count() {
+        return roleRepository.count();
+    }
 }
