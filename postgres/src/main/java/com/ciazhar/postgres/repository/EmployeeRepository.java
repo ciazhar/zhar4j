@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.scheduling.annotation.Async;
 
 import java.time.LocalDate;
@@ -73,4 +74,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     // Custom query using native SQL
     @Query(value = "SELECT * FROM employee WHERE first_name = :firstName AND last_name = :lastName", nativeQuery = true)
     List<Employee> findByFirstNameAndLastNameNative(String firstName, String lastName);
+
+    @Query("SELECT e FROM Employee e WHERE (:firstName IS NULL OR e.firstName = :firstName) AND (:lastName IS NULL OR e.lastName = :lastName)")
+    List<Employee> findByOptionalParams(@Param("firstName") String firstName, @Param("lastName") String lastName);
 }

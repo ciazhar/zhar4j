@@ -39,8 +39,8 @@ public class EmployeeService {
     }
 
     public Employee saveEmployee(Employee employee) {
-        employee.setCreatedAt(LocalDateTime.now());
-        employee.setUpdatedAt(LocalDateTime.now());
+        employee.setCreatedDate(LocalDateTime.now());
+        employee.setLastModifiedDate(LocalDateTime.now());
         Employee savedEmployee = employeeRepo.save(employee);
 
         log.info("Employee with id: {} saved successfully", employee.getId());
@@ -49,13 +49,19 @@ public class EmployeeService {
 
     public Employee updateEmployee(Employee employee) {
         Optional<Employee> existingEmployee = employeeRepo.findById(employee.getId());
-        employee.setCreatedAt(existingEmployee.get().getCreatedAt());
-        employee.setUpdatedAt(LocalDateTime.now());
+        if (existingEmployee.isPresent()) {
+            employee.setCreatedDate(existingEmployee.get().getCreatedDate());
+            employee.setLastModifiedDate(LocalDateTime.now());
 
-        Employee updatedEmployee = employeeRepo.save(employee);
+            Employee updatedEmployee = employeeRepo.save(employee);
 
-        log.info("Employee with id: {} updated successfully", employee.getId());
-        return updatedEmployee;
+            log.info("Employee with id: {} updated successfully", employee.getId());
+            return updatedEmployee;
+        }
+
+        log.info("Employee with id: {} doesn't exist", employee.getId());
+        return null;
+
     }
 
     public void deleteEmployeeById(Integer id) {
