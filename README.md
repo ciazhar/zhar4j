@@ -7,12 +7,13 @@ Read my style guide [here](STYLE.md)
 
 ## Contents
 - [Postgres](postgres)
+- [RabbitMQ](rabbitmq)
 
 ## TODO
 - Webflux
 - Thymeleaf
 - Pg
-  - caching
+  - caching (redis)
   - trx
 
 ## Note
