@@ -2,6 +2,7 @@ package com.ciazhar.postgres.service;
 
 
 import com.ciazhar.postgres.model.Employee;
+import com.ciazhar.postgres.model.EmployeeDetailsProjection;
 import com.ciazhar.postgres.repository.EmployeeRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -80,6 +82,10 @@ public class EmployeeService {
 
     public Long count() {
         return employeeRepo.count();
+    }
+
+    public Collection<EmployeeDetailsProjection> getEmployeesOlderThan(int age) {
+        return employeeRepo.findAllProjectedBy(age);
     }
 
 }

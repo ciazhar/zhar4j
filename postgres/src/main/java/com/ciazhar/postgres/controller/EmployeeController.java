@@ -2,12 +2,14 @@ package com.ciazhar.postgres.controller;
 
 import com.ciazhar.postgres.model.ApiResponse;
 import com.ciazhar.postgres.model.Employee;
+import com.ciazhar.postgres.model.EmployeeDetailsProjection;
 import com.ciazhar.postgres.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -40,6 +42,11 @@ public class EmployeeController {
     @GetMapping("/async")
     public CompletableFuture<List<Employee>> readAllBy() {
         return employeeService.readAllBy();
+    }
+
+    @GetMapping("/older-than")
+    public Collection<EmployeeDetailsProjection> getEmployeesOlderThan(@RequestParam int age) {
+        return employeeService.getEmployeesOlderThan(age);
     }
 
     @GetMapping("/{id}")

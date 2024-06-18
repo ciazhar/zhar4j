@@ -1,6 +1,7 @@
 package com.ciazhar.postgres.repository;
 
 import com.ciazhar.postgres.model.Employee;
+import com.ciazhar.postgres.model.EmployeeDetailsProjection;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,14 +10,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.scheduling.annotation.Async;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
-/**
- * Repository is an interface that provides access to data in a database
- */
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     // Derived query to find an employee by designation
@@ -77,4 +76,17 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     @Query("SELECT e FROM Employee e WHERE (:firstName IS NULL OR e.firstName = :firstName) AND (:lastName IS NULL OR e.lastName = :lastName)")
     List<Employee> findByOptionalParams(@Param("firstName") String firstName, @Param("lastName") String lastName);
+
+    String query = """
+                WITH EmployeeCTE AS (SELECT e.id, e.first_name, e.last_name, u1.username AS created_by, u2.username AS last_modified_by
+                                    FROM employees e
+                                             LEFT JOIN users u1 ON e.created_by_id = u1.id
+                                             LEFT JOIN users u2 ON e.last_modified_by_id = u2.id
+                                    WHERE e.age > :age)
+                SELECT e.id, e.first_name, e.last_name, e.created_by, e.last_modified_by
+                FROM EmployeeCTE e
+            """;
+
+    @Query(value = query, nativeQuery = true)
+    Collection<EmployeeDetailsProjection> findAllProjectedBy(@Param("age") int age);
 }

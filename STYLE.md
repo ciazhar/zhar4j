@@ -167,5 +167,37 @@ Untuk optional parameter kita bisa menggukaan pendekatan seperti berikut
 List<Employee> findByOptionalParams(@Param("firstName") String firstName, @Param("lastName") String lastName);
 ```
 
-- untuk data yang cacheable bisa di cache
-- cte
+### Projection
+
+Untuk membuat projection di spring data kita perlu membuat interface projection terlebih dulu
+
+```java
+public interface EmployeeDetailsProjection {
+    String getId();
+
+    String getFirstName();
+
+    String getLastName();
+
+    String getCreatedBy();
+
+    String getLastModifiedBy();
+}
+```
+
+Kemudian kita perlu membuat repositorynya, saya lebih suka menggunakan raw query agar mudah di debug
+
+```java
+String query = """
+            WITH EmployeeCTE AS (SELECT e.id, e.first_name, e.last_name, u1.username AS created_by, u2.username AS last_modified_by
+                                FROM employees e
+                                         LEFT JOIN users u1 ON e.created_by_id = u1.id
+                                         LEFT JOIN users u2 ON e.last_modified_by_id = u2.id
+                                WHERE e.age > :age)
+            SELECT e.id, e.first_name, e.last_name, e.created_by, e.last_modified_by
+            FROM EmployeeCTE e
+        """;
+
+@Query(value = query, nativeQuery = true)
+Collection<EmployeeDetailsProjection> findAllProjectedBy(@Param("age") int age);
+```
