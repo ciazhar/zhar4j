@@ -1,6 +1,6 @@
 package com.ciazhar.postgres.service;
 
-import com.ciazhar.postgres.model.User;
+import com.ciazhar.postgres.model.entity.User;
 import com.ciazhar.postgres.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

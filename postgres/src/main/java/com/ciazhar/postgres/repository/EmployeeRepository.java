@@ -1,7 +1,7 @@
 package com.ciazhar.postgres.repository;
 
-import com.ciazhar.postgres.model.Employee;
-import com.ciazhar.postgres.model.EmployeeDetailsProjection;
+import com.ciazhar.postgres.model.entity.Employee;
+import com.ciazhar.postgres.model.projection.EmployeeDetailsProjection;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;

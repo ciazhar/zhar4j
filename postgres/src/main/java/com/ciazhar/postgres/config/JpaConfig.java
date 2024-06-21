@@ -1,6 +1,6 @@
 package com.ciazhar.postgres.config;
 
-import com.ciazhar.postgres.model.User;
+import com.ciazhar.postgres.model.entity.User;
 import com.ciazhar.postgres.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

@@ -1,4 +1,4 @@
-package com.ciazhar.postgres.model;
+package com.ciazhar.postgres.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

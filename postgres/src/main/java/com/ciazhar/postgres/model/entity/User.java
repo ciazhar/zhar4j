@@ -1,4 +1,4 @@
-package com.ciazhar.postgres.model;
+package com.ciazhar.postgres.model.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;

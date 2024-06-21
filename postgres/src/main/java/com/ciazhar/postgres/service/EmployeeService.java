@@ -1,9 +1,12 @@
 package com.ciazhar.postgres.service;
 
 
-import com.ciazhar.postgres.model.Employee;
-import com.ciazhar.postgres.model.EmployeeDetailsProjection;
+import com.ciazhar.postgres.model.entity.Department;
+import com.ciazhar.postgres.model.entity.Employee;
+import com.ciazhar.postgres.model.projection.EmployeeDetailsProjection;
+import com.ciazhar.postgres.repository.DepartmentRepository;
 import com.ciazhar.postgres.repository.EmployeeRepository;
+import com.ciazhar.postgres.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +29,8 @@ import java.util.stream.Stream;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepo;
+    private final DepartmentRepository departmentRepo;
+    private final UserRepository userRepo;
 
     public List<Employee> getAllEmployees() {
         return employeeRepo.findAll();
@@ -86,6 +91,24 @@ public class EmployeeService {
 
     public Collection<EmployeeDetailsProjection> getEmployeesOlderThan(int age) {
         return employeeRepo.findAllProjectedBy(age);
+    }
+
+    @Transactional
+    public Employee hireEmployeeAndAssignToDepartment(Employee employee, String departmentName) {
+
+        // Find or create the department
+        Department department = departmentRepo.findByName(departmentName)
+                .orElseGet(() -> {
+                    Department newDepartment = new Department();
+                    newDepartment.setName(departmentName);
+                    return departmentRepo.save(newDepartment);
+                });
+
+        // Assign the department to the employee
+        employee.setDepartment(department);
+
+        // Save the employee
+        return employeeRepo.save(employee);
     }
 
 }

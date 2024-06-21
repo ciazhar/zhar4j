@@ -1,8 +1,8 @@
 package com.ciazhar.postgres.controller;
 
-import com.ciazhar.postgres.model.ApiResponse;
-import com.ciazhar.postgres.model.Employee;
-import com.ciazhar.postgres.model.EmployeeDetailsProjection;
+import com.ciazhar.postgres.model.dto.ApiResponse;
+import com.ciazhar.postgres.model.entity.Employee;
+import com.ciazhar.postgres.model.projection.EmployeeDetailsProjection;
 import com.ciazhar.postgres.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -57,6 +57,14 @@ public class EmployeeController {
     @PostMapping
     public ResponseEntity<ApiResponse> saveEmployee(@RequestBody Employee employee) {
         return ResponseEntity.ok().body(new ApiResponse("success", employeeService.saveEmployee(employee)));
+    }
+
+
+    @PostMapping("/hire")
+    public ResponseEntity<Employee> hireEmployee(@RequestBody Employee employee,
+                                                 @RequestParam String departmentName) {
+        Employee hiredEmployee = employeeService.hireEmployeeAndAssignToDepartment(employee, departmentName);
+        return ResponseEntity.ok(hiredEmployee);
     }
 
     @PutMapping

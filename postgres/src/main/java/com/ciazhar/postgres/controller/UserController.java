@@ -1,7 +1,7 @@
 package com.ciazhar.postgres.controller;
 
-import com.ciazhar.postgres.model.ApiResponse;
-import com.ciazhar.postgres.model.User;
+import com.ciazhar.postgres.model.dto.ApiResponse;
+import com.ciazhar.postgres.model.entity.User;
 import com.ciazhar.postgres.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

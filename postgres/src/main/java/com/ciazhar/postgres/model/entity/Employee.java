@@ -1,5 +1,6 @@
-package com.ciazhar.postgres.model;
+package com.ciazhar.postgres.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,9 +15,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-/**
- * An entity class represents a table in a relational database
- */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -36,6 +34,10 @@ public class Employee {
     private LocalDate joinedOn;
     private String address;
     private LocalDate dateOfBirth;
+
+    @ManyToOne
+    @JsonBackReference
+    private Department department;
 
     @CreatedDate
     private LocalDateTime createdDate;

@@ -1,4 +1,4 @@
-package com.ciazhar.postgres.model;
+package com.ciazhar.postgres.model.projection;
 
 public interface EmployeeDetailsProjection {
     String getId();

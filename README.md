@@ -12,9 +12,8 @@ Read my style guide [here](STYLE.md)
 ## TODO
 - Webflux
 - Thymeleaf
-- Pg
-  - caching (redis)
-  - trx
+- Redis
+  - method caching
 
 ## Note
 - Graalvm vs JVM (JVM Win) https://medium.com/deno-the-complete-reference/performance-benefits-brought-in-by-graalvm-springboot-hello-world-case-54d1a409a829
